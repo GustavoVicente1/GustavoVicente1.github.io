@@ -1,0 +1,541 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Gustavo Vicente — Desenvolvedor Web</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --bg: #0D0D0D;
+      --surface: #161616;
+      --border: #2A2A2A;
+      --accent: #7FFF6E;
+      --accent-dim: rgba(127,255,110,0.1);
+      --accent-mid: rgba(127,255,110,0.25);
+      --text: #F0F0F0;
+      --muted: #888;
+      --font-display: 'Space Grotesk', sans-serif;
+      --font-mono: 'Space Mono', monospace;
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: var(--font-display);
+      font-size: 16px;
+      line-height: 1.7;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    a { color: inherit; text-decoration: none; }
+
+    /* ── NAV ── */
+    nav {
+      position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 1.1rem 2.5rem;
+      border-bottom: 1px solid var(--border);
+      background: rgba(13,13,13,0.85);
+      backdrop-filter: blur(12px);
+    }
+    .nav-logo {
+      font-family: var(--font-mono);
+      font-size: 14px;
+      color: var(--accent);
+      letter-spacing: .05em;
+    }
+    .nav-links { display: flex; gap: 2rem; }
+    .nav-links a {
+      font-size: 13px;
+      color: var(--muted);
+      letter-spacing: .04em;
+      transition: color .2s;
+    }
+    .nav-links a:hover { color: var(--text); }
+
+    /* ── HERO ── */
+    .hero {
+      min-height: 100vh;
+      display: flex; flex-direction: column; justify-content: flex-end;
+      padding: 0 2.5rem 4rem;
+      border-bottom: 1px solid var(--border);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .hero-grid {
+      position: absolute; inset: 0;
+      background-image:
+        linear-gradient(var(--border) 1px, transparent 1px),
+        linear-gradient(90deg, var(--border) 1px, transparent 1px);
+      background-size: 80px 80px;
+      opacity: .35;
+      mask-image: linear-gradient(to bottom, transparent 0%, black 30%, black 70%, transparent 100%);
+    }
+
+    .hero-badge {
+      display: inline-flex; align-items: center; gap: 8px;
+      font-family: var(--font-mono);
+      font-size: 12px;
+      color: var(--accent);
+      border: 1px solid var(--accent-mid);
+      background: var(--accent-dim);
+      padding: 4px 12px;
+      border-radius: 100px;
+      margin-bottom: 1.5rem;
+      width: fit-content;
+    }
+    .hero-badge::before {
+      content: '';
+      width: 6px; height: 6px;
+      border-radius: 50%;
+      background: var(--accent);
+      animation: pulse 2s infinite;
+    }
+    @keyframes pulse {
+      0%, 100% { opacity: 1; }
+      50% { opacity: .3; }
+    }
+
+    .hero h1 {
+      font-size: clamp(2.8rem, 7vw, 6rem);
+      font-weight: 700;
+      line-height: 1.05;
+      letter-spacing: -.03em;
+      max-width: 900px;
+    }
+    .hero h1 em {
+      font-style: normal;
+      color: var(--accent);
+    }
+
+    .hero-sub {
+      margin-top: 1.5rem;
+      font-size: 1.05rem;
+      color: var(--muted);
+      max-width: 500px;
+    }
+
+    .hero-cta {
+      display: flex; gap: 1rem; margin-top: 2.5rem; flex-wrap: wrap;
+    }
+    .btn {
+      display: inline-flex; align-items: center; gap: 8px;
+      padding: .75rem 1.5rem;
+      font-family: var(--font-display);
+      font-size: 14px;
+      font-weight: 500;
+      border-radius: 8px;
+      cursor: pointer;
+      transition: all .2s;
+    }
+    .btn-primary {
+      background: var(--accent);
+      color: #0D0D0D;
+      border: none;
+    }
+    .btn-primary:hover { background: #a0ffb0; transform: translateY(-1px); }
+    .btn-outline {
+      background: transparent;
+      color: var(--text);
+      border: 1px solid var(--border);
+    }
+    .btn-outline:hover { border-color: var(--muted); transform: translateY(-1px); }
+
+    /* ── SKILLS ── */
+    .section {
+      padding: 5rem 2.5rem;
+      border-bottom: 1px solid var(--border);
+    }
+    .section-label {
+      font-family: var(--font-mono);
+      font-size: 11px;
+      color: var(--accent);
+      letter-spacing: .12em;
+      text-transform: uppercase;
+      margin-bottom: 1.5rem;
+    }
+    .section-title {
+      font-size: clamp(1.6rem, 3.5vw, 2.4rem);
+      font-weight: 700;
+      letter-spacing: -.02em;
+      margin-bottom: 3rem;
+    }
+
+    .skills-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 1px;
+      background: var(--border);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      overflow: hidden;
+    }
+    .skill-item {
+      background: var(--surface);
+      padding: 1.5rem;
+      transition: background .2s;
+    }
+    .skill-item:hover { background: #1e1e1e; }
+    .skill-icon {
+      font-size: 1.6rem;
+      margin-bottom: .75rem;
+    }
+    .skill-name {
+      font-weight: 600;
+      font-size: 15px;
+      margin-bottom: .25rem;
+    }
+    .skill-desc {
+      font-size: 13px;
+      color: var(--muted);
+    }
+
+    /* ── PROJECTS ── */
+    .projects-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      gap: 1.5rem;
+    }
+    .project-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      overflow: hidden;
+      transition: border-color .2s, transform .2s;
+    }
+    .project-card:hover {
+      border-color: var(--accent-mid);
+      transform: translateY(-3px);
+    }
+    .project-thumb {
+      height: 180px;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 3rem;
+      background: linear-gradient(135deg, #161616 0%, #1e2a1e 100%);
+      border-bottom: 1px solid var(--border);
+    }
+    .project-body { padding: 1.25rem; }
+    .project-tags {
+      display: flex; gap: 6px; flex-wrap: wrap; margin-bottom: .75rem;
+    }
+    .tag {
+      font-family: var(--font-mono);
+      font-size: 11px;
+      color: var(--accent);
+      background: var(--accent-dim);
+      border: 1px solid var(--accent-mid);
+      padding: 2px 8px;
+      border-radius: 4px;
+    }
+    .project-title {
+      font-size: 16px;
+      font-weight: 600;
+      margin-bottom: .4rem;
+    }
+    .project-desc {
+      font-size: 13px;
+      color: var(--muted);
+      line-height: 1.6;
+    }
+    .project-link {
+      display: inline-flex; align-items: center; gap: 4px;
+      margin-top: 1rem;
+      font-size: 13px;
+      color: var(--accent);
+      font-weight: 500;
+      transition: gap .2s;
+    }
+    .project-link:hover { gap: 8px; }
+
+    /* ── ABOUT ── */
+    .about-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 4rem;
+      align-items: start;
+    }
+    @media (max-width: 700px) { .about-grid { grid-template-columns: 1fr; gap: 2rem; } }
+    .about-text p { color: var(--muted); margin-bottom: 1rem; }
+    .about-text p strong { color: var(--text); }
+
+    .about-stats {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 1px;
+      background: var(--border);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      overflow: hidden;
+    }
+    .stat {
+      background: var(--surface);
+      padding: 1.5rem;
+    }
+    .stat-num {
+      font-size: 2.2rem;
+      font-weight: 700;
+      color: var(--accent);
+      line-height: 1;
+      margin-bottom: .25rem;
+    }
+    .stat-label {
+      font-size: 13px;
+      color: var(--muted);
+    }
+
+    /* ── CONTACT ── */
+    .contact-inner {
+      max-width: 600px;
+    }
+    .contact-inner p {
+      color: var(--muted);
+      margin-bottom: 2rem;
+    }
+    .contact-links {
+      display: flex; flex-direction: column; gap: .75rem;
+    }
+    .contact-link {
+      display: flex; align-items: center; gap: 12px;
+      padding: 1rem 1.25rem;
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      background: var(--surface);
+      font-size: 14px;
+      transition: border-color .2s, background .2s;
+    }
+    .contact-link:hover {
+      border-color: var(--accent-mid);
+      background: var(--accent-dim);
+    }
+    .contact-link-icon {
+      font-size: 1.25rem;
+      width: 32px;
+      text-align: center;
+    }
+    .contact-link-label { color: var(--muted); font-size: 12px; }
+    .contact-link-value { font-weight: 500; }
+
+    /* ── FOOTER ── */
+    footer {
+      padding: 2rem 2.5rem;
+      display: flex; align-items: center; justify-content: space-between;
+      font-size: 13px;
+      color: var(--muted);
+      flex-wrap: wrap;
+      gap: 1rem;
+    }
+    footer span { font-family: var(--font-mono); }
+
+    /* ── MOBILE ── */
+    @media (max-width: 600px) {
+      nav { padding: 1rem 1.25rem; }
+      .nav-links { gap: 1.2rem; }
+      .hero { padding: 0 1.25rem 3rem; }
+      .section { padding: 3.5rem 1.25rem; }
+      footer { padding: 1.5rem 1.25rem; }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      *, *::before, *::after { animation: none !important; transition: none !important; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- NAV -->
+  <nav>
+    <span class="nav-logo">GV.dev</span>
+    <div class="nav-links">
+      <a href="#projetos">Projetos</a>
+      <a href="#sobre">Sobre</a>
+      <a href="#contato">Contato</a>
+    </div>
+  </nav>
+
+  <!-- HERO -->
+  <section class="hero">
+    <div class="hero-grid" aria-hidden="true"></div>
+    <div class="hero-badge">Disponível para freelas</div>
+    <h1>Desenvolvimento web<br />que <em>funciona</em><br />de verdade.</h1>
+    <p class="hero-sub">Crio sites rápidos, modernos e acessíveis para pequenas empresas. HTML, CSS, JavaScript e WordPress.</p>
+    <div class="hero-cta">
+      <a href="#contato" class="btn btn-primary">Fale comigo →</a>
+      <a href="#projetos" class="btn btn-outline">Ver projetos</a>
+    </div>
+  </section>
+
+  <!-- SKILLS -->
+  <section class="section">
+    <p class="section-label">// Tecnologias</p>
+    <h2 class="section-title">O que eu domino</h2>
+    <div class="skills-grid">
+      <div class="skill-item">
+        <div class="skill-icon">🌐</div>
+        <div class="skill-name">HTML5</div>
+        <div class="skill-desc">Estrutura semântica e acessível</div>
+      </div>
+      <div class="skill-item">
+        <div class="skill-icon">🎨</div>
+        <div class="skill-name">CSS3</div>
+        <div class="skill-desc">Layouts responsivos e animações</div>
+      </div>
+      <div class="skill-item">
+        <div class="skill-icon">⚡</div>
+        <div class="skill-name">JavaScript</div>
+        <div class="skill-desc">Interatividade e lógica no front-end</div>
+      </div>
+      <div class="skill-item">
+        <div class="skill-icon">🐘</div>
+        <div class="skill-name">PHP</div>
+        <div class="skill-desc">Back-end e integração com banco</div>
+      </div>
+      <div class="skill-item">
+        <div class="skill-icon">🗄️</div>
+        <div class="skill-name">MySQL</div>
+        <div class="skill-desc">Banco de dados relacional</div>
+      </div>
+      <div class="skill-item">
+        <div class="skill-icon">📦</div>
+        <div class="skill-name">WordPress</div>
+        <div class="skill-desc">Sites profissionais sem complicação</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- PROJECTS -->
+  <section class="section" id="projetos">
+    <p class="section-label">// Portfólio</p>
+    <h2 class="section-title">Projetos recentes</h2>
+    <div class="projects-grid">
+
+      <div class="project-card">
+        <div class="project-thumb">🏥</div>
+        <div class="project-body">
+          <div class="project-tags">
+            <span class="tag">HTML</span>
+            <span class="tag">CSS</span>
+            <span class="tag">JavaScript</span>
+          </div>
+          <div class="project-title">MedCall — Painel Hospitalar</div>
+          <div class="project-desc">Sistema de chamada de pacientes com fila de atendimento, síntese de voz e registro em tempo real.</div>
+          <a href="#" class="project-link">Ver projeto →</a>
+        </div>
+      </div>
+
+      <div class="project-card">
+        <div class="project-thumb">🛍️</div>
+        <div class="project-body">
+          <div class="project-tags">
+            <span class="tag">HTML</span>
+            <span class="tag">CSS</span>
+            <span class="tag">JS</span>
+          </div>
+          <div class="project-title">Site para pequena empresa</div>
+          <div class="project-desc">Landing page responsiva para empresa local com formulário de contato e galeria de produtos.</div>
+          <a href="#" class="project-link">Ver projeto →</a>
+        </div>
+      </div>
+
+      <div class="project-card">
+        <div class="project-thumb">📊</div>
+        <div class="project-body">
+          <div class="project-tags">
+            <span class="tag">PHP</span>
+            <span class="tag">MySQL</span>
+            <span class="tag">MVC</span>
+          </div>
+          <div class="project-title">Sistema CRUD em PHP</div>
+          <div class="project-desc">Aplicação web com cadastro, listagem, edição e exclusão de dados usando arquitetura MVC e MySQL.</div>
+          <a href="#" class="project-link">Ver projeto →</a>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- ABOUT -->
+  <section class="section" id="sobre">
+    <p class="section-label">// Sobre mim</p>
+    <h2 class="section-title">Quem é Gustavo</h2>
+    <div class="about-grid">
+      <div class="about-text">
+        <p>Sou <strong>Gustavo Vicente</strong>, desenvolvedor web de Cuiabá–MT, estudante de <strong>Análise e Desenvolvimento de Sistemas</strong> na UNIC.</p>
+        <p>Trabalho com desenvolvimento front-end e back-end, criando desde landing pages para pequenos negócios até sistemas web completos com banco de dados.</p>
+        <p>Gosto de escrever código limpo, criar interfaces que as pessoas conseguem usar de verdade, e aprender tecnologias novas a cada projeto.</p>
+        <a href="#contato" class="btn btn-outline" style="margin-top:.5rem">Vamos trabalhar juntos →</a>
+      </div>
+      <div class="about-stats">
+        <div class="stat">
+          <div class="stat-num">6+</div>
+          <div class="stat-label">Tecnologias dominadas</div>
+        </div>
+        <div class="stat">
+          <div class="stat-num">3+</div>
+          <div class="stat-label">Projetos concluídos</div>
+        </div>
+        <div class="stat">
+          <div class="stat-num">ADS</div>
+          <div class="stat-label">Curso em andamento</div>
+        </div>
+        <div class="stat">
+          <div class="stat-num">MT</div>
+          <div class="stat-label">Cuiabá, Brasil</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- CONTACT -->
+  <section class="section" id="contato">
+    <p class="section-label">// Contato</p>
+    <h2 class="section-title">Bora conversar?</h2>
+    <div class="contact-inner">
+      <p>Precisa de um site para sua empresa ou tem um projeto em mente? Me manda mensagem — respondo rápido.</p>
+      <div class="contact-links">
+        <a href="mailto:seuemail@email.com" class="contact-link">
+          <span class="contact-link-icon">📧</span>
+          <div>
+            <div class="contact-link-label">E-mail</div>
+            <div class="contact-link-value">seuemail@email.com</div>
+          </div>
+        </a>
+        <a href="https://wa.me/556500000000" target="_blank" class="contact-link">
+          <span class="contact-link-icon">💬</span>
+          <div>
+            <div class="contact-link-label">WhatsApp</div>
+            <div class="contact-link-value">(65) 9 0000-0000</div>
+          </div>
+        </a>
+        <a href="https://github.com/seuusuario" target="_blank" class="contact-link">
+          <span class="contact-link-icon">🐙</span>
+          <div>
+            <div class="contact-link-label">GitHub</div>
+            <div class="contact-link-value">github.com/seuusuario</div>
+          </div>
+        </a>
+        <a href="https://linkedin.com/in/seuusuario" target="_blank" class="contact-link">
+          <span class="contact-link-icon">💼</span>
+          <div>
+            <div class="contact-link-label">LinkedIn</div>
+            <div class="contact-link-value">linkedin.com/in/seuusuario</div>
+          </div>
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <!-- FOOTER -->
+  <footer>
+    <span>© 2025 Gustavo Vicente</span>
+    <span style="color:#444">Feito com HTML, CSS & vontade de crescer.</span>
+  </footer>
+
+</body>
+</html>
